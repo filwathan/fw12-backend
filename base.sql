@@ -22,7 +22,7 @@ create table group_users(
 	id_group_user INT NOT NULL PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
 	name_group_user VARCHAR(255),
 
-    is_delete INT DEFAULT (0),
+  is_delete INT DEFAULT (0),
 	delete_by VARCHAR(255),
 	delete_date TIMESTAMP,
 	insert_by VARCHAR(255),
@@ -38,10 +38,10 @@ create table movies(
 	direcred_by VARCHAR(255),
 	duration TIME,
 	synopsis TEXT,
-    price INT,
-    date_start TIMESTAMP,
-    date_end TIMESTAMP,
-    image VARCHAR(255),
+  price INT,
+  date_start TIMESTAMP,
+  date_end TIMESTAMP,
+  image VARCHAR(255),
 
 	is_delete INT DEFAULT (0),
 	delete_by VARCHAR(255),
@@ -108,8 +108,8 @@ create table casts(
 
 create table movies_premieres(
 	id_movie_premiere INT NOT NULL PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-	id_movie INT,
-    id_premiere INT,
+  id_movie INT,
+  id_premiere INT,
 
 	is_delete INT DEFAULT (0),
 	delete_by VARCHAR(255),
@@ -124,7 +124,7 @@ create table movies_premieres(
 create table premieres(
 	id_premiere INT NOT NULL PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
 	premiere_name VARCHAR(255),
-    image_premiere VARCHAR(255),
+  image_premiere VARCHAR(255),
 
 	is_delete INT DEFAULT (0),
 	delete_by VARCHAR(255),
@@ -151,9 +151,9 @@ create table locations(
 
 create table premieres_locations(
 	id_premiere_location INT NOT NULL PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-    id_premiere INT,
-    id_location INT,
-    location_adress VARCHAR(255),
+  id_premiere INT,
+  id_location INT,
+  location_adress VARCHAR(255),
 
 	is_delete INT DEFAULT (0),
 	delete_by VARCHAR(255),
@@ -192,11 +192,11 @@ create table movies_showtimes(
 );
 
 CREATE TABLE seats(
-    id_seat INT NOT NULL PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-    number_seat VARCHAR(255),
-    id_seat_status INT,
+  id_seat INT NOT NULL PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+  number_seat VARCHAR(255),
+  id_seat_status INT,
 
-    is_delete INT DEFAULT (0),
+  is_delete INT DEFAULT (0),
 	delete_by VARCHAR(255),
 	delete_date TIMESTAMP,
 	insert_by VARCHAR(255),
@@ -206,10 +206,10 @@ CREATE TABLE seats(
 );
 
 CREATE TABLE seats_status(
-    id_seat_status INT NOT NULL PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-    status_seat VARCHAR(255),
+  id_seat_status INT NOT NULL PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+  status_seat VARCHAR(255),
 
-    is_delete INT DEFAULT (0),
+  is_delete INT DEFAULT (0),
 	delete_by VARCHAR(255),
 	delete_date TIMESTAMP,
 	insert_by VARCHAR(255),
@@ -219,13 +219,13 @@ CREATE TABLE seats_status(
 );
 
 create table orders(
-    id_order INT NOT NULL PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-    date_and_time TIMESTAMP,
+  id_order INT NOT NULL PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+  date_and_time TIMESTAMP,
 	id_user INT,
 	id_movie INT,
 	id_movies_showtime INT,
-    id_seat INT,
-    id_order_status INT,
+  id_seat INT,
+  id_order_status INT,
 
 	is_delete INT DEFAULT (0),
 	delete_by VARCHAR(255),
@@ -237,8 +237,8 @@ create table orders(
 );
 
 create table orders_status(
-    id_order_status INT NOT NULL PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-    order_status_name VARCHAR(255),
+  id_order_status INT NOT NULL PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+  order_status_name VARCHAR(255),
 
 	is_delete INT DEFAULT (0),
 	delete_by VARCHAR(255),
@@ -250,13 +250,13 @@ create table orders_status(
 );
 
 create table orders_history(
-    id_order_history INT NOT NULL PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-    date_and_time TIMESTAMP,
+  id_order_history INT NOT NULL PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+  date_and_time TIMESTAMP,
 	id_user INT,
 	id_movie INT,
 	id_movies_showtime INT,
-    id_seat INT,
-    id_order_status_history INT,
+  id_seat INT,
+  id_order_status_history INT,
 
 	is_delete INT DEFAULT (0),
 	delete_by VARCHAR(255),
@@ -268,8 +268,8 @@ create table orders_history(
 );
 
 create table orders_status_history(
-    id_order_status_history INT NOT NULL PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-    order_status_history_name VARCHAR(255),
+  id_order_status_history INT NOT NULL PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+  order_status_history_name VARCHAR(255),
 
 	is_delete INT DEFAULT (0),
 	delete_by VARCHAR(255),
@@ -287,8 +287,8 @@ INSERT INTO group_users(
 	id_group_user,
 	name_group_user,
 
-    is_delete,
-    delete_by,
+  is_delete,
+  delete_by,
 	delete_date,
 	insert_by,
 	insert_date,
@@ -319,24 +319,24 @@ INSERT INTO users(
 );
 
 INSERT INTO movies(
-	id_movie,
-	title_movie,
-	release_date,
-	direcred_by,
-	duration,
-	synopsis,
-    price,
-    date_start,
-    date_end,
-    image,
+  id_movie,
+  title_movie,
+  release_date,
+  direcred_by,
+  duration,
+  synopsis,
+  price,
+  date_start,
+  date_end,
+  image,
 
-	is_delete,
-	delete_by,
-	delete_date,
-	insert_by,
-	insert_date,
-	update_by,
-	update_date
+  is_delete,
+  delete_by,
+  delete_date,
+  insert_by,
+  insert_date,
+  update_by,
+  update_date
 ) VALUES(
     DEFAULT, 'Spider-Man: Homecoming', '2017-6-28', 'Jon Watss', '02:13:00',
     'Thrilled by his experience with the Avengers, Peter returns home, where he lives with his Aunt May, under the watchful eye of his new mentor Tony Stark, Peter tries to fall back into his normal daily routine - distracted by thoughts of proving himself to be more than just your friendly neighborhood Spider-Man - but when the Vulture emerges as a new villain, everything that Peter holds most important will be threatened. ',
@@ -412,7 +412,7 @@ INSERT INTO casts(
 INSERT INTO movies_premieres(
 	id_movie_premiere ,
 	id_movie ,
-    id_premiere ,
+  id_premiere ,
 
 	is_delete ,
 	delete_by ,
@@ -429,7 +429,7 @@ INSERT INTO movies_premieres(
 INSERT INTO premieres(
 	id_premiere ,
 	premiere_name ,
-    image_premiere ,
+  image_premiere ,
 
 	is_delete ,
 	delete_by ,
@@ -461,9 +461,9 @@ INSERT INTO locations(
 
 INSERT INTO premieres_locations(
 	id_premiere_location ,
-    id_premiere ,
-    id_location ,
-    location_adress ,
+  id_premiere ,
+  id_location ,
+  location_adress ,
 
 	is_delete ,
 	delete_by ,
@@ -511,70 +511,70 @@ INSERT INTO  movies_showtimes(
 );
 
 INSERT INTO seats(
-    id_seat ,
-    number_seat ,
-    id_seat_status ,
+  id_seat ,
+  number_seat ,
+  id_seat_status ,
 
-    is_delete ,
-	delete_by ,
-	delete_date ,
-	insert_by ,
-	insert_date ,
-	update_by ,
-	update_date
+  is_delete ,
+  delete_by ,
+  delete_date ,
+  insert_by ,
+  insert_date ,
+  update_by ,
+  update_date
 ) VALUES(
     DEFAULT, 1, 1,
     DEFAULT, null, null, 1, DEFAULT, null, null
 );
 
 INSERT INTO seats_status(
-    id_seat_status ,
-    status_seat ,
+  id_seat_status ,
+  status_seat ,
 
-    is_delete ,
-	delete_by ,
-	delete_date ,
-	insert_by ,
-	insert_date ,
-	update_by ,
-	update_date
+  is_delete ,
+  delete_by,
+  delete_date ,
+  insert_by ,
+  insert_date ,
+  update_by ,
+  update_date
 ) VALUES(
     DEFAULT, 'booked',
     DEFAULT, null, null, 1, DEFAULT, null, null
 );
 
 INSERT INTO orders(
-    id_order ,
-    date_and_time ,
-	id_user ,
-	id_movie ,
-	id_movies_showtime ,
-    id_seat ,
-    id_order_status ,
+  id_order ,
+  date_and_time ,
+  id_user ,
+  id_movie ,
+  id_movies_showtime ,
+  id_seat ,
+  id_order_status ,
 
-	is_delete ,
-	delete_by ,
-	delete_date ,
-	insert_by ,
-	insert_date ,
-	update_by ,
-	update_date
+  is_delete ,
+  delete_by ,
+  delete_date ,
+  insert_by ,
+  insert_date ,
+  update_by ,
+  update_date
 ) VALUES(
     DEFAULT, '2022-11-22', 1, 1, 1, 1, 1,
     DEFAULT, null, null, 1, DEFAULT, null, null
 );
 
 INSERT INTO orders_status(
-    id_order_status ,
-    order_status_name ,
+  id_order_status ,
+  order_status_name ,
 
-	is_delete ,
-	delete_by ,
-	delete_date ,
-	insert_by ,
-	insert_date ,
-	update_by ,
-	update_date
+  is_delete ,
+  delete_by ,
+  delete_date ,
+  insert_by ,
+  insert_date ,
+  update_by ,
+  update_date
 ) VALUES(
     DEFAULT,'Not Paid',
     DEFAULT, null, null, 1, DEFAULT, null, null
