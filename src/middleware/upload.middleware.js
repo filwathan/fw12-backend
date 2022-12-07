@@ -1,6 +1,7 @@
 const multer = require('multer');
 const errorHandler = require('../helpers/errorHandler.helper')
 
+
 const storage = multer.diskStorage({
   destination: (req, file, callback) =>{
     callback(null, 'uploads')
@@ -10,12 +11,22 @@ const storage = multer.diskStorage({
     const ext = extension[extension.length - 1]
     const name = `${new Date().getDate()}_${new Date().getTime()}.${ext}`
     callback(null, name)
-
   }
 })
 
+
 const upload = multer({
-  storage
+  storage,
+  // limits: {fileSize: 1024 * 1024 *2},
+  // fileFilter: (req, file, callback) =>{
+  //   const extension = file.originalname.split('.')
+  //   const ext = extension[extension.length - 1]
+  //   if(ext !== 'jpg' && ext !== 'png' && ext !== 'jpeg'){
+  //     return errorHandler(err,res)
+  //   }
+  //   callback(null, true)
+  // }
+
 })
 
 const uploadMiddleware = upload.single('picture')
