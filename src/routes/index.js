@@ -4,7 +4,7 @@ const authMiddleware = require('../middleware/auth.middleware');
 
 routes.use('/users', require('./users.router'));
 routes.use('/genres', require('./genres.router'));
-routes.use('/movies',authMiddleware, require('./movies.router'));
+routes.use('/movies', require('./movies.router'));
 routes.use('/moviesGenres', require('./moviesGenres.router'));
 routes.use('/casts', require('./casts.router'));
 routes.use('/moviesCasts', require('./moviesCasts.router'));

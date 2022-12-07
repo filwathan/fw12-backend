@@ -1,6 +1,9 @@
 const modelUsers = require('../models/users.model')
 const errorHandler = require('../helpers/errorHandler.helper')
 
+const fs = require('fs')
+
+
 exports.readAllUsers = (req, res) => {
   modelUsers.ambilAllUsers((err, data)=>{
     if (err){
@@ -34,7 +37,9 @@ exports.readUser = (req, res) => {
 }
 
 exports.createUser = (req, res) => {
-  console.log(req.body);
+  if(req.file){
+    req.body.picture = req.file.filename
+  }
   modelUsers.newUserGuest(req.body, (err, data) =>{
     if (err){
       return errorHandler(err, res)
@@ -67,14 +72,27 @@ exports.deleteUser = (req, res) => {
 }
 
 exports.updateUser = (req, res) => {
+  if(req.file){
+    console.log(req.file)
+    req.body.picture = req.file.filename
+    modelUsers.singleUser(req.params, (err, data)=>{
+      if(data.rows.length){
+        const [user] = data.rows
+        if(user.picture){
+          fs.rm('uploads/'+user.picture, {force: true}, (err)=>{
+            if(err){
+              return errorHandler(err, res)
+            }
+          })
+        }
+      }
+    })
+  }
   modelUsers.updateUser(req, (err, data) =>{
     if (err){
-      console.log("masuk ke error controller")
       return errorHandler(err, res)
       }
     else{
-      console.log("masuk ke success")
-      console.log(data.rows)
       return res.status(200).json({
         success: true,
         message: 'update user can access',

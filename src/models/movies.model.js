@@ -39,22 +39,13 @@ exports.deleteMovie = (data, callback) =>{
 }
 
 exports.nowShowingMovie = (filter, callback) =>{
-  const timeNow = new Date();
-  const dateNow = timeNow.getFullYear() +"-"+ timeNow.getMonth() +"-"+ timeNow.getDate() +" "+ timeNow.getHours() +":"+ timeNow.getMinutes() +":"+ timeNow.getSeconds()
-  console.log(dateNow)
-  const sql = `SELECT m."titleMovie", g."genreName" FROM "movies" AS m JOIN "moviesGenres" AS mg ON m."idMovie" = mg."idMovie" JOIN genres AS g ON mg."idGenre" = g."idGenre" WHERE  m."dateStart" < $1 and m."dateEnd" > $1 LIKE $4 ORDER BY "${filter.sortBy}" ${filter.sort} LIMIT $2 OFFSET $3`
-  const value = [dateNow, filter.limit, filter.offset, `%${filter.search}%`]
+  const sql = `SELECT m."idMovie", m."titleMovie", STRING_AGG(g."genreName", ', ') FROM "movies" AS m JOIN "moviesGenres" AS mg ON m."idMovie" = mg."idMovie" JOIN "genres" AS g ON mg."idGenre" = g."idGenre" WHERE (date(current_date) >= date("dateStart")) AND (date(current_date) <= date("dateEnd")) AND m."titleMovie" LIKE $3 GROUP BY m."idMovie", m."titleMovie" ORDER BY m."${filter.sortBy}" ${filter.sort} LIMIT $1 OFFSET $2`;
+  const value = [filter.limit, filter.offset, `%${filter.search}%`]
   db.query(sql, value, callback)
 }
 
 exports.countNowShowingMovies = (filter, callback) =>{
-  const timeNowstamp = new Date().toISOString().slice(0, -1);
-  const timeNow = new Date(Date.parse(timeNowstamp));
-  const dateNow = (timeNow.getFullYear() +"-"+ timeNow.getMonth() +"-"+ timeNow.getDate() +" "+ timeNow.getHours() +":"+ timeNow.getMinutes() +":"+ timeNow.getSeconds())
-  console.log("count timeNowstamp "+timeNowstamp)
-  console.log("count timeNow "+timeNow)
-  console.log("count dateNow "+dateNow)
-  const sql = `SELECT COUNT(m."titleMovie") FROM "movies" AS m JOIN "moviesGenres" AS mg ON m."idMovie" = mg."idMovie" JOIN genres AS g ON mg."idGenre" = g."idGenre" WHERE  m."dateStart" < $1 and m."dateEnd" > $1 LIKE $2`;
-  const value = [dateNow, `%${filter.search}%`]
+  const sql = `SELECT COUNT("titleMovie") AS "totalData" FROM "movies" WHERE (date(current_date) >= date("dateStart")) AND (date(current_date) <= date("dateEnd")) AND "titleMovie" LIKE $1`;
+  const value = [`%${filter.search}%`]
   db.query(sql, value, callback)
 }
