@@ -39,7 +39,7 @@ exports.deleteMovie = (data, callback) =>{
 }
 
 exports.nowShowingMovie = (filter, callback) =>{
-  const sql = `SELECT m."idMovie", m."titleMovie", STRING_AGG(g."genreName", ', ') FROM "movies" AS m JOIN "moviesGenres" AS mg ON m."idMovie" = mg."idMovie" JOIN "genres" AS g ON mg."idGenre" = g."idGenre" WHERE (date(current_date) >= date("dateStart")) AND (date(current_date) <= date("dateEnd")) AND m."titleMovie" LIKE $3 GROUP BY m."idMovie", m."titleMovie" ORDER BY m."${filter.sortBy}" ${filter.sort} LIMIT $1 OFFSET $2`;
+  const sql = `SELECT m."idMovie", m."picture", m."titleMovie", STRING_AGG(g."genreName", ', ') AS genre FROM "movies" AS m JOIN "moviesGenres" AS mg ON m."idMovie" = mg."idMovie" JOIN "genres" AS g ON mg."idGenre" = g."idGenre" WHERE (date(current_date) >= date("dateStart")) AND (date(current_date) <= date("dateEnd")) AND m."titleMovie" LIKE $3 GROUP BY m."idMovie", m."titleMovie" ORDER BY m."${filter.sortBy}" ${filter.sort} LIMIT $1 OFFSET $2`;
   const value = [filter.limit, filter.offset, `%${filter.search}%`]
   db.query(sql, value, callback)
 }
