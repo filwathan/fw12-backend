@@ -73,7 +73,6 @@ exports.deleteUser = (req, res) => {
 
 exports.updateUser = (req, res) => {
   if(req.file){
-    // console.log(req.file)
     req.body.picture = req.file.filename
     modelUsers.singleUser(req.params, (err, data)=>{
       if(data.rows.length){

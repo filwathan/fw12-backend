@@ -27,8 +27,8 @@ exports.createMovie = (data, callback) =>{
 
 exports.updateMovie = (data, callback) =>{
   const timeNow = new Date();
-  const sql = 'UPDATE "movies" SET "titleMovie" = COALESCE(NULLIF($2, \'\')::VARCHAR, "titleMovie" ), "releaseDate" = COALESCE(NULLIF($3, \'\')::TIMESTAMP, "releaseDate" ), "direcredBy" = COALESCE(NULLIF($4, \'\')::VARCHAR, "direcredBy" ), "duration" = COALESCE(NULLIF($5, \'\')::TIME, "duration" ), "synopsis" = COALESCE(NULLIF($6, \'\')::TEXT, "synopsis" ), "price" = COALESCE(NULLIF($7, \'\')::INT, "locatipriceonName" ), "dateStart" = COALESCE(NULLIF($8, \'\')::TIMESTAMP, "dateStart" ), "dateEnd" = COALESCE(NULLIF($9, \'\')::TIMESTAMP, "dateEnd" ), "updateDate" = $10  WHERE "idMovie" = $1 RETURNING*';
-  const value = [data.params.idMovie, data.body.movieName, data.body.releaseDate, data.body.direcredBy, data.body.duration, data.body.synopsis, data.body.price, data.body.dateStart, data.body.dateEnd, timeNow];
+  const sql = 'UPDATE "movies" SET "titleMovie" = COALESCE(NULLIF($2, \'\')::VARCHAR, "titleMovie" ), "releaseDate" = COALESCE(NULLIF($3, \'\')::TIMESTAMP, "releaseDate" ), "direcredBy" = COALESCE(NULLIF($4, \'\')::VARCHAR, "direcredBy" ), "duration" = COALESCE(NULLIF($5, \'\')::TIME, "duration" ), "synopsis" = COALESCE(NULLIF($6, \'\')::TEXT, "synopsis" ), "price" = COALESCE(NULLIF($7, \'\')::INT, "price" ), "dateStart" = COALESCE(NULLIF($8, \'\')::TIMESTAMP, "dateStart" ), "dateEnd" = COALESCE(NULLIF($9, \'\')::TIMESTAMP, "dateEnd" ), "picture" = COALESCE(NULLIF($10, \'\')::VARCHAR, "picture" ), "updateDate" = $11  WHERE "idMovie" = $1 RETURNING*';
+  const value = [data.params.idMovie, data.body.titleMovie, data.body.releaseDate, data.body.direcredBy, data.body.duration, data.body.synopsis, data.body.price, data.body.dateStart, data.body.dateEnd, data.body.picture, timeNow];
   db.query(sql, value, callback)
 }
 

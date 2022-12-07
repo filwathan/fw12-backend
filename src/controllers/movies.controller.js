@@ -2,6 +2,8 @@ const movieModel = require('../models/movies.model')
 const errorHandler = require('../helpers/errorHandler.helper')
 const filter = require('../helpers/filter.helper')
 
+const fs = require('fs')
+
 exports.allMovies = (req, res) =>{
   const sortable = ['titleMovie', 'direcredBy', 'synopsis','insertDate', 'updateDate']
   // console.log(req.userData) // untuk melihat id yang sedang login dari token
@@ -55,6 +57,21 @@ exports.createMovie = (req, res) =>{
 }
 
 exports.updateMovie = (req, res) =>{
+  if(req.file){
+    req.body.picture = req.file.filename
+    movieModel.singleMovie(req.params, (err, data)=>{
+      if(data.rows.length){
+        const [user] = data.rows
+        if(user.picture){
+          fs.rm('uploads/'+user.picture, {force: true}, (err)=>{
+            if(err){
+              return errorHandler(err, res)
+            }
+          })
+        }
+      }
+    })
+  }
   movieModel.updateMovie(req, (err, data)=>{
     if(err){
       return errorHandler(err,res);
