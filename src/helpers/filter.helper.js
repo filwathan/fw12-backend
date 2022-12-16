@@ -8,12 +8,20 @@ const filter = (data, sortable, countData, res, callback) => {
   data.sortBy = (sortable.includes(data.sortBy) && data.sortBy) || 'insertDate'
   data.sort = data.sort || 'ASC'
 
+  // untuk count upcoming year dan tanggal
+  data.year = data.year || ''
+  data.month = data.month || ''
+
   const params = {
     limit: data.limit,
     offset: (data.page - 1) * data.limit,
     search: data.search,
     sort: data.sort,
-    sortBy: data.sortBy
+    sortBy: data.sortBy,
+
+     // untuk count upcoming year dan tanggal
+     year: data.year,
+     month: data.month
   }
   const pageInfo = {
     page: data.page,

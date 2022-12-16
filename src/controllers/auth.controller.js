@@ -14,7 +14,7 @@ exports.login = (req, res) => {
         return res.status(200).json({
           succes: true,
           message: 'Login success',
-          result:  {token}
+          results:  {token}
         })
       }
     }
@@ -29,12 +29,12 @@ exports.register = (req, res) =>{
   if (req.body.fullName && req.body.lastName && req.body.email && req.body.password && req.body.phone ){
     userModel.newUserGuest(req.body, (err, {rows})=>{
       if(rows.length){
-        const [users] = rows
-        const token = jwt.sign({id: users.idUser}, 'backend-secret')
+        // const [users] = rows
+        // const token = jwt.sign({id: users.idUser}, 'backend-secret')
         return res.status(200).json({
           success: true,
           message: 'Create User Guest Success',
-          result: {token}
+          // results: {token}
         })
       }
       else{
@@ -64,7 +64,7 @@ exports.forgotPassword = (req, res)=>{
         return res.status(200).json({
           success: true,
           message: 'Forgot Password is success, please check your Code',
-          //result: {token}
+          //results: {token}
         })
       })
     }
@@ -106,7 +106,7 @@ exports.resetPassword = (req, res)=>{
                 return res.status(200).json({
                   success: true,
                   message: 'Password has been Updated',
-                  //result: {token}
+                  //results: {token}
                 })
 
               }

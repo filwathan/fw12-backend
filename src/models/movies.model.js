@@ -6,6 +6,12 @@ exports.allMovies = (filter, callback)=>{
   db.query(sql,value, callback)
 }
 
+exports.allMoviesSemua = (callback)=>{
+  const sql = `SELECT m."idMovie", m."picture", m."titleMovie", STRING_AGG(g."genreName", ', ') AS genre FROM "movies" AS m JOIN "moviesGenres" AS mg ON m."idMovie" = mg."idMovie" JOIN "genres" AS g ON mg."idGenre" = g."idGenre" GROUP BY m."idMovie", m."titleMovie"`;
+  // const value = [filter.limit, filter.offset, `%${filter.search}%`]
+  db.query(sql, callback)
+}
+
 exports.countMovies = (filter, callback) =>{
   const sql = `SELECT COUNT("titleMovie") AS "totalData" FROM "movies" WHERE "titleMovie" LIKE $1`;
   const value = [`%${filter.search}%`]
@@ -18,6 +24,11 @@ exports.singleMovie = (data, callback)=>{
   db.query(sql, value, callback) ;
 }
 
+exports.singleMovieDetail = (data, callback)=>{
+  const sql = `SELECT m."idMovie", m."picture", m."titleMovie",m."direcredBy", m."releaseDate", m."duration", m.synopsis, STRING_AGG(DISTINCT(g."genreName"), ', ') AS genre, STRING_AGG(DISTINCT(c."castName"), ', ') AS cast FROM "movies" AS m JOIN "moviesGenres" AS mg ON m."idMovie" = mg."idMovie" JOIN "genres" AS g ON mg."idGenre" = g."idGenre" JOIN "moviesCasts" AS mc ON m."idMovie" = mc."idMovie" JOIN "casts" AS c ON mc."idCast" = c."idCast" WHERE m."idMovie" = $1 GROUP BY m."idMovie", m."titleMovie"`;
+  const value = [data.idMovie];
+  db.query(sql, value, callback) ;
+}
 exports.createMovie = (data, callback) =>{
   console.log("masuk ke model")
   const sql = 'INSERT INTO "movies" ("titleMovie", "releaseDate", "direcredBy", "duration", "synopsis", "price", "dateStart", "dateEnd")  VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING*';
@@ -47,5 +58,17 @@ exports.nowShowingMovie = (filter, callback) =>{
 exports.countNowShowingMovies = (filter, callback) =>{
   const sql = `SELECT COUNT("titleMovie") AS "totalData" FROM "movies" WHERE (date(current_date) >= date("dateStart")) AND (date(current_date) <= date("dateEnd")) AND "titleMovie" LIKE $1`;
   const value = [`%${filter.search}%`]
+  db.query(sql, value, callback)
+}
+
+exports.upcomingMovie = ( filter, callback) =>{
+  const sql = `SELECT m."idMovie", m."picture", m."titleMovie", STRING_AGG(g."genreName", ', ') AS genre FROM "movies" AS m JOIN "moviesGenres" AS mg ON m."idMovie" = mg."idMovie" JOIN "genres" AS g ON mg."idGenre" = g."idGenre" WHERE date_part('year', m."releaseDate")::TEXT = COALESCE(NULLIF($4, ''), date_part('year', current_date)::TEXT) AND date_part('month', m."releaseDate")::TEXT = COALESCE(NULLIF($5, ''), date_part('month', current_date)::TEXT) AND m."titleMovie" LIKE $3 GROUP BY m."idMovie", m."titleMovie" ORDER BY m."${filter.sortBy}" ${filter.sort} LIMIT $1 OFFSET $2`;
+  const value = [filter.limit, filter.offset, `%${filter.search}%`, filter.year, filter.month]
+  db.query(sql, value, callback)
+}
+
+exports.countUpcomingMovie = (filter, callback) =>{
+  const sql = `SELECT COUNT("titleMovie") AS "totalData" FROM "movies" WHERE date_part('year', "releaseDate")::TEXT = COALESCE(NULLIF($2, ''), date_part('year', current_date)::TEXT) AND date_part('month', "releaseDate")::TEXT = COALESCE(NULLIF($3, ''), date_part('month', current_date)::TEXT) AND "titleMovie" LIKE $1`;
+  const value = [`%${filter.search}%`, filter.year, filter.month]
   db.query(sql, value, callback)
 }

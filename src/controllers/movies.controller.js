@@ -24,6 +24,24 @@ exports.allMovies = (req, res) =>{
   })
 }
 
+exports.allMoviesSemua = (req, res) =>{
+  // const sortable = ['titleMovie', 'direcredBy', 'synopsis','insertDate', 'updateDate']
+  // // console.log(req.userData) // untuk melihat id yang sedang login dari token
+  // filter(req.query, sortable, movieModel.countMovies, res, (filter, pageInfo)=>{
+    movieModel.allMoviesSemua((err, data)=>{
+      if (err){
+        return errorHandler(err, res)
+      }
+      else{
+        return res.status(200).json({
+          succes: true,
+          message: 'you get all Movies Semua',
+          results: data.rows
+        })
+      }
+    })
+}
+
 exports.singleMovie = (req, res) =>{
   movieModel.singleMovie(req.params,(err, data) =>{
     if(err){
@@ -33,6 +51,22 @@ exports.singleMovie = (req, res) =>{
       return res.status(200).json({
         succes: true,
         message: 'you get single movie',
+        results: data.rows[0]
+      })
+    }
+  })
+
+}
+
+exports.singleMovieDetail = (req, res) =>{
+  movieModel.singleMovieDetail(req.params,(err, data) =>{
+    if(err){
+      return errorHandler(err,res);
+    }
+    else{
+      return res.status(200).json({
+        succes: true,
+        message: 'you get single movie details',
         results: data.rows[0]
       })
     }
@@ -104,7 +138,7 @@ exports.deleteMovie = (req, res) =>{
 exports.nowShowingMovie = (req, res) =>{
   const sortable = ['titleMovie', 'direcredBy', 'synopsis','insertDate', 'updateDate']
   filter(req.query, sortable, movieModel.countNowShowingMovies, res, (filter, pageInfo)=>{
-    movieModel.nowShowingMovie(filter, (err, data)=>{
+    movieModel.nowShowingMovie( filter, (err, data)=>{
       if(err){
         return errorHandler(err,res);
       }
@@ -118,5 +152,23 @@ exports.nowShowingMovie = (req, res) =>{
       }
     })
   })
+}
 
+exports.upcomingMovie = (req, res) =>{
+  const sortable = ['titleMovie', 'direcredBy', 'synopsis','insertDate', 'updateDate']
+  filter(req.query, sortable, movieModel.countUpcomingMovie, res, (filter, pageInfo)=>{
+    movieModel.upcomingMovie(filter, (err, data)=>{
+      if(err){
+        return errorHandler(err,res);
+      }
+      else{
+        return res.status(200).json({
+          succes: true,
+          message: 'now showing',
+          pageInfo,
+          results: data.rows
+        })
+      }
+    })
+  })
 }
