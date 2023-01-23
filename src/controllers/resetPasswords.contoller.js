@@ -1,4 +1,4 @@
-const resetPasswordsModel = require('../models/ResetPasswords.model')
+const resetPasswordsModel = require('../models/resetPasswords.model')
 const errorHandler = require('../helpers/errorHandler.helper')
 const filter = require('../helpers/filter.helper')
 
