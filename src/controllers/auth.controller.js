@@ -29,12 +29,12 @@ exports.register = (req, res) =>{
   if (req.body.fullName && req.body.lastName && req.body.email && req.body.password && req.body.phone ){
     userModel.newUserGuest(req.body, (err, {rows})=>{
       if(rows.length){
-        // const [users] = rows
-        // const token = jwt.sign({id: users.idUser}, 'backend-secret')
+        const [users] = rows
+        const token = jwt.sign({id: users.idUser}, 'backend-secret')
         return res.status(200).json({
           success: true,
           message: 'Create User Guest Success',
-          // results: {token}
+          results: {token}
         })
       }
       else{
@@ -87,7 +87,7 @@ exports.resetPassword = (req, res)=>{
       }
       if (rows.length){
         const [requestResetPassword] = rows
-        if( new Date( requestResetPassword.insertDate).getTime() + (1000 * 60 * 1) < new Date().getTime() ){
+        if( new Date( requestResetPassword.insertDate).getTime() + (10000 * 60 * 1) < new Date().getTime() ){
           return res.status(400).json({
             success: false,
             message: 'expired code'

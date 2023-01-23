@@ -1,6 +1,8 @@
 const express = require('express')
 const cors = require('cors')
 
+require('dotenv').config()
+
 const app = express()
 
 app.use(express.json())
@@ -19,6 +21,7 @@ app.get('/', (req, res) =>{
   })
 })
 
-app.listen(8888, ()=>{
-  console.log("app listening on port 8888")
+const port = process.env.PORT
+app.listen(port, ()=>{
+  console.log("app listening on port " + port)
 })
