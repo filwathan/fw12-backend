@@ -25,7 +25,7 @@ exports.singleMovie = (data, callback)=>{
 }
 
 exports.singleMovieDetail = (data, callback)=>{
-  const sql = `SELECT m."idMovie", m."picture", m."titleMovie",m."direcredBy", m."releaseDate", m."duration", m.synopsis, STRING_AGG(DISTINCT(g."genreName"), ', ') AS genre, STRING_AGG(DISTINCT(c."castName"), ', ') AS cast FROM "movies" AS m JOIN "moviesGenres" AS mg ON m."idMovie" = mg."idMovie" JOIN "genres" AS g ON mg."idGenre" = g."idGenre" JOIN "moviesCasts" AS mc ON m."idMovie" = mc."idMovie" JOIN "casts" AS c ON mc."idCast" = c."idCast" WHERE m."idMovie" = $1 GROUP BY m."idMovie", m."titleMovie"`;
+  const sql = `SELECT m."idMovie", m."picture", m."titleMovie",m."direcredBy", m."releaseDate", m."duration", m.price, m.synopsis, STRING_AGG(DISTINCT(g."genreName"), ', ') AS genre, STRING_AGG(DISTINCT(c."castName"), ', ') AS cast FROM "movies" AS m JOIN "moviesGenres" AS mg ON m."idMovie" = mg."idMovie" JOIN "genres" AS g ON mg."idGenre" = g."idGenre" JOIN "moviesCasts" AS mc ON m."idMovie" = mc."idMovie" JOIN "casts" AS c ON mc."idCast" = c."idCast" WHERE m."idMovie" = $1 GROUP BY m."idMovie", m."titleMovie"`;
   const value = [data.idMovie];
   db.query(sql, value, callback) ;
 }
