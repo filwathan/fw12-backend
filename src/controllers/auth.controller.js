@@ -26,7 +26,7 @@ exports.login = (req, res) => {
 }
 
 exports.register = (req, res) =>{
-  if (req.body.fullName && req.body.lastName && req.body.email && req.body.password && req.body.phone ){
+  if (req.body.firstName && req.body.lastName && req.body.email && req.body.password && req.body.phone ){
     userModel.newUserGuest(req.body, (err, {rows})=>{
       if(rows.length){
         const [users] = rows

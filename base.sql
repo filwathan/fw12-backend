@@ -2,7 +2,7 @@ CREATE DATABASE pengen_nonton;
 
 create table "users"(
 	"idUser" INT NOT NULL PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-	"fullName" VARCHAR(255),
+	"firstName" VARCHAR(255),
 	"lastName" VARCHAR(255),
 	"email" VARCHAR(255),
 	"password" VARCHAR(255),
@@ -317,7 +317,7 @@ INSERT INTO "groupUsers"(
 
 INSERT INTO "users"(
 	"idUser",
-	"fullName",
+	"firstName",
 	"lastName",
 	"email",
 	"password",
