@@ -37,3 +37,9 @@ exports.deletePremiere = (data, callback) =>{
   const value = [data.idPremiere];
   db.query(sql, value, callback) ;
 }
+
+exports.premiereLocationByMovie = (data, callback)=>{
+  const sql = `SELECT mp."idMovie", mp."idPremiere", p."premiereName", p."imagePremiere", pl."idLocation", pl."locationAdress" FROM "moviesPremieres" AS mp JOIN "premieresLocations" AS pl ON mp."idPremiere" = pl."idPremiere" JOIN "premieres" AS p ON mp."idPremiere" = p."idPremiere" WHERE mp."idMovie" = $1`;
+  const value = [data.idMovie];
+  db.query(sql, value, callback) ;
+}

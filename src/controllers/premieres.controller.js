@@ -83,3 +83,20 @@ exports.deletePremiere = (req, res) =>{
   })
 
 }
+
+exports.premiereLocationByMovie = (req, res) =>{
+  premiereModel.premiereLocationByMovie(req.params,(err, data) =>{
+    if(err){
+      console.log(err)
+      return errorHandler(err,res);
+    }
+    else{
+      return res.status(200).json({
+        succes: true,
+        message: 'you get single Premiere Location by id',
+        results: data.rows
+      })
+    }
+  })
+
+}
