@@ -6,10 +6,20 @@ exports.allMovies = (filter, callback)=>{
   db.query(sql,value, callback)
 }
 
-exports.allMoviesSemua = (callback)=>{
-  const sql = `SELECT m."idMovie", m."picture", m."titleMovie", STRING_AGG(g."genreName", ', ') AS genre FROM "movies" AS m JOIN "moviesGenres" AS mg ON m."idMovie" = mg."idMovie" JOIN "genres" AS g ON mg."idGenre" = g."idGenre" GROUP BY m."idMovie", m."titleMovie"`;
-  // const value = [filter.limit, filter.offset, `%${filter.search}%`]
-  db.query(sql, callback)
+exports.allMoviesSemua = (filter, callback)=>{
+  // const sql = `SELECT m."idMovie", m."picture", m."titleMovie", STRING_AGG(g."genreName", ', ') AS genre FROM "movies" AS m JOIN "moviesGenres" AS mg ON m."idMovie" = mg."idMovie" JOIN "genres" AS g ON mg."idGenre" = g."idGenre" GROUP BY m."idMovie", m."titleMovie"`;
+  const sql = `SELECT m."idMovie", m."picture", m."titleMovie", STRING_AGG(g."genreName", ', ') AS genre
+  FROM "movies" AS m
+  JOIN "moviesGenres" AS mg ON m."idMovie" = mg."idMovie"
+  JOIN "genres" AS g ON mg."idGenre" = g."idGenre"
+  WHERE m."titleMovie" LIKE $3
+  GROUP BY m."idMovie", m."titleMovie"
+  ORDER BY m."titleMovie" ${filter.sort}
+  LIMIT $1
+  OFFSET $2`;
+  const value = [filter.limit, filter.offset, `%${filter.search}%`]
+  // db.query(sql, callback)
+  db.query(sql,value, callback)
 }
 
 exports.countMovies = (filter, callback) =>{

@@ -25,21 +25,24 @@ exports.allMovies = (req, res) =>{
 }
 
 exports.allMoviesSemua = (req, res) =>{
-  // const sortable = ['titleMovie', 'direcredBy', 'synopsis','insertDate', 'updateDate']
+  const sortable = ['titleMovie', 'direcredBy', 'synopsis','insertDate', 'updateDate']
   // // console.log(req.userData) // untuk melihat id yang sedang login dari token
-  // filter(req.query, sortable, movieModel.countMovies, res, (filter, pageInfo)=>{
-    movieModel.allMoviesSemua((err, data)=>{
+  filter(req.query, sortable, movieModel.countMovies, res, (filter, pageInfo)=>{
+    movieModel.allMoviesSemua(filter, (err, data)=>{
       if (err){
+        console.log(err)
         return errorHandler(err, res)
       }
       else{
         return res.status(200).json({
           succes: true,
           message: 'you get all Movies Semua',
+          pageInfo,
           results: data.rows
         })
       }
     })
+  })
 }
 
 exports.singleMovie = (req, res) =>{
@@ -92,7 +95,7 @@ exports.createMovie = (req, res) =>{
 
 exports.updateMovie = (req, res) =>{
   if(req.file){
-    req.body.picture = req.file.filename
+    req.body.picture = req.file.path
     movieModel.singleMovie(req.params, (err, data)=>{
       if(data.rows.length){
         const [user] = data.rows

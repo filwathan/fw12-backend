@@ -5,7 +5,8 @@ const authMiddleware = (req, res, next) =>{
   if (authorization && authorization.startsWith('Bearer ')){
     const token = authorization.slice(7)
     try{
-      const payload = jwt.verify(token, 'backend-secret')
+      // const payload = jwt.verify(token, 'backend-secret')
+      const payload = jwt.verify(token, process.env.BACKEND_SECRET)
       req.userData = payload
       next()
     }

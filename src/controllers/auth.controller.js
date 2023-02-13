@@ -10,7 +10,7 @@ exports.login = (req, res) => {
       const [user] = rows
       if(req.body.password === user.password)
       {
-        const token = jwt.sign({id: user.idUser}, 'backend-secret')
+        const token = jwt.sign({id: user.idUser}, process.env.BACKEND_SECRET)
         return res.status(200).json({
           succes: true,
           message: 'Login success',
@@ -30,7 +30,7 @@ exports.register = (req, res) =>{
     userModel.newUserGuest(req.body, (err, {rows})=>{
       if(rows.length){
         const [users] = rows
-        const token = jwt.sign({id: users.idUser}, 'backend-secret')
+        const token = jwt.sign({id: users.idUser}, process.env.BACKEND_SECRET)
         return res.status(200).json({
           success: true,
           message: 'Create User Guest Success',
@@ -60,11 +60,14 @@ exports.forgotPassword = (req, res)=>{
       const code = Math.ceil(Math.random() * 100000 +1)
       users.code = code
       resetPasswordsModel.createResetPassword(users, (errCreate, {rows : rowsCreate}) =>{
-        const token = jwt.sign ({id:  users.idUser}, 'backend-secret')
+      // resetPasswordsModel.createResetPassword(users, (errCreate, dataKocak) =>{
+        if (errCreate){
+          return errorHandler(errCreate, res)
+        }
         return res.status(200).json({
           success: true,
           message: 'Forgot Password is success, please check your Code',
-          //results: {token}
+          // results: {rowsCreate}
         })
       })
     }
@@ -79,12 +82,14 @@ exports.forgotPassword = (req, res)=>{
 }
 
 exports.resetPassword = (req, res)=>{
+  console.log(req.body)
   const {password, confirmPassword} = req.body
   if (password === confirmPassword){
     resetPasswordsModel.singleResetPasswordByEmailAndCode(req.body, (err, {rows})=>{
       if(err){
         return errorHandler(err, res)
       }
+      console.log(rows)
       if (rows.length){
         const [requestResetPassword] = rows
         if( new Date( requestResetPassword.insertDate).getTime() + (10000 * 60 * 1) < new Date().getTime() ){
@@ -95,9 +100,14 @@ exports.resetPassword = (req, res)=>{
         }
         req.params.idUser = requestResetPassword.idUser
         userModel.updateUser(req, (errUpdate, {rows : rowsUpdate})=>{
+        // userModel.updateUser(req, (errUpdate, kocak)=>{
           if(errUpdate){
+            console.log(errUpdate)
             return errorHandler(errUpdate, res)
           }
+          // console.log(kocak)
+          // if (kocak.length){
+          //   const [users] = kocak
           if (rowsUpdate.length){
             const [users] = rowsUpdate
             resetPasswordsModel.deleteResetPassword(requestResetPassword, (errDelete, {rows : rowsDelete})=>{

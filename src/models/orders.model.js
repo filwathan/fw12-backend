@@ -11,9 +11,35 @@ exports.singleOrder = (data, callback)=>{
   db.query(sql, value, callback) ;
 }
 
+exports.orderByUser = (data, callback)=>{
+  const sql = `SELECT o."idOrder", o."idUser", o."dateAndTime", st."showtimeName", m."titleMovie", p."premiereName", p."imagePremiere" FROM "orders" AS o
+  JOIN movies AS m on m."idMovie" = o."idMovie"
+  JOIN showtimes as st on st."idShowtime" = o."idShowtime"
+  JOIN premieres as p on p."idPremiere" = o."idPremiere"
+  WHERE o."idUser" = $1`;
+  const value = [data.idUser];
+  db.query(sql, value, callback) ;
+}
+
+exports.orderDetailsById = (data, callback)=>{
+  const sql = `SELECT o."idOrder", o."dateAndTime", st."showtimeName", m."titleMovie", o.seat, o.total, m."titleMovie", STRING_AGG(g."genreName", ', ') AS genre
+  FROM "orders" AS o
+  JOIN movies AS m on m."idMovie" = o."idMovie"
+  JOIN showtimes as st on st."idShowtime" = o."idShowtime"
+  JOIN "moviesGenres" AS mg ON mg."idMovie" = m."idMovie"
+  join genres AS g ON g."idGenre" = mg."idGenre"
+  WHERE o."idOrder" = $1
+  GROUP BY o."idOrder", o."dateAndTime", st."showtimeName", m."titleMovie", o.seat, o.total, m."titleMovie" `;
+  const value = [data.idOrder];
+  db.query(sql, value, callback) ;
+}
+
 exports.createOrder = (data, callback) =>{
-  const sql = 'INSERT INTO "orders" ("dateAndTime", "idUser", "idMovie", "idMoviesShowtime", "idSeat", "idSeatStatus", "idOrderStatus") VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING*';
-  const value = [data.dateAndTime, data.idUser, data.idMovie, data.idMoviesShowtime, data.idSeat, data.idSeatStatus, data.idOrderStatus];
+  const sql = `INSERT INTO "orders"
+  ("dateAndTime", "idUser", "idMovie", "email", "fullName", "phone", "idLocation", "idPremiere", "seat", "idShowtime", "idPayment", "total")
+  VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)
+  RETURNING*`;
+  const value = [data.dateAndTime, data.idUser, data.idMovie, data.email, data.fullName, data.phone, data.idLocation, data.idPremiere, data.seat, data.idShowtime, data.idPayment, data.total];
   db.query(sql, value, callback) ;
 }
 

@@ -23,6 +23,13 @@ exports.singleOrder = (req, res) =>{
       return errorHandler(err,res);
     }
     else{
+      if(!data.rows[0])
+      {
+        return res.status(400).json({
+          succes: false,
+          message: 'id cant find',
+        })
+      }
       return res.status(200).json({
         succes: true,
         message: 'you get single Orders',
@@ -30,7 +37,50 @@ exports.singleOrder = (req, res) =>{
       })
     }
   })
+}
 
+exports.orderByUser = (req, res) =>{
+  ordersModel.orderByUser(req.params,(err, data) =>{
+    if(err){
+      return errorHandler(err,res);
+    }
+    else{
+      if(!data.rows.length)
+      {
+        return res.status(400).json({
+          succes: false,
+          message: 'id user cant find',
+        })
+      }
+      return res.status(200).json({
+        succes: true,
+        message: 'you get Orders by user',
+        results: data.rows
+      })
+    }
+  })
+}
+
+exports.orderDetailsById = (req, res) =>{
+  ordersModel.orderDetailsById(req.params,(err, data) =>{
+    if(err){
+      return errorHandler(err,res);
+    }
+    else{
+      if(!data.rows.length)
+      {
+        return res.status(400).json({
+          succes: false,
+          message: 'id order cant find',
+        })
+      }
+      return res.status(200).json({
+        succes: true,
+        message: 'you get Orders by idOrders',
+        results: data.rows[0]
+      })
+    }
+  })
 }
 
 exports.createOrder = (req, res) =>{

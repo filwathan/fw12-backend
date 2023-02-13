@@ -20,7 +20,6 @@ exports.readAllUsers = (req, res) => {
 }
 
 exports.readUser = (req, res) => {
-  console.log(req.params)
   modelUsers.singleUser(req.params, (err,data)=>{
     if (err){
       return errorHandler(err, res)
@@ -73,7 +72,7 @@ exports.deleteUser = (req, res) => {
 
 exports.updateUser = (req, res) => {
   if(req.file){
-    req.body.picture = req.file.filename
+    req.body.picture = req.file.path
     modelUsers.singleUser(req.params, (err, data)=>{
       if(data.rows.length){
         const [user] = data.rows
@@ -89,6 +88,7 @@ exports.updateUser = (req, res) => {
   }
   modelUsers.updateUser(req, (err, data) =>{
     if (err){
+      console.log(err)
       return errorHandler(err, res)
       }
     else{

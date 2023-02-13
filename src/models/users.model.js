@@ -31,7 +31,15 @@ exports.deleteUser = (data, callback) =>{
 
 exports.updateUser = (data, callback) =>{
   const timeNow =  new Date();
-  const sql = 'UPDATE "users" set "firstName" = COALESCE(NULLIF($2, \'\')::VARCHAR, "firstName" ), "lastName" = COALESCE(NULLIF($3, \'\')::VARCHAR, "lastName" ), "email" = COALESCE(NULLIF($4, \'\')::VARCHAR, "email" ), "password" = COALESCE(NULLIF($5, \'\')::VARCHAR, "password" ), "phone" = COALESCE(NULLIF($6, \'\')::VARCHAR, "phone" ), "picture" = COALESCE(NULLIF($7, \'\')::VARCHAR, "picture" ), "updateDate" = $8 WHERE "idUser" = $1 RETURNING *';
+  const sql = `UPDATE "users" set
+  "firstName" = COALESCE(NULLIF($2, \'\')::VARCHAR, "firstName" ),
+  "lastName" = COALESCE(NULLIF($3, \'\')::VARCHAR, "lastName" ),
+  "email" = COALESCE(NULLIF($4, \'\')::VARCHAR, "email" ),
+  "password" = COALESCE(NULLIF($5, \'\')::VARCHAR, "password" ),
+  "phone" = COALESCE(NULLIF($6, \'\')::BIGINT, "phone" ),
+  "picture" = COALESCE(NULLIF($7, \'\')::VARCHAR, "picture" ),
+  "updateDate" = $8
+  WHERE "idUser" = $1 RETURNING *`;
   const value = [data.params.idUser, data.body.firstName, data.body.lastName, data.body.email, data.body.password, data.body.phone, data.body.picture, timeNow ]
   db.query(sql, value, callback)
 }
