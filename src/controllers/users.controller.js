@@ -25,11 +25,19 @@ exports.readUser = (req, res) => {
       return errorHandler(err, res)
       }
     else{
-      return res.status(200).json({
-        success: true,
-        message: 'Read single user can access',
-        results: data.rows[0]
-      })
+      if(data.rows[0]) {
+        return res.status(200).json({
+          success: true,
+          message: 'Read single user can access',
+          results: data.rows[0]
+        })
+      }
+      else {
+        return res.status(401).json({
+          success: false,
+          message: 'User cant find',
+        })
+      }
     }
   })
 
